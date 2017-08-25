@@ -26,14 +26,14 @@
 // This uses require.js to structure javascript:
 // http://requirejs.org/docs/api.html#define
 
-define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'abstractFilesystemAccess', 'q', 'module', 'transformStyles'],
-    function ($, zimArchiveLoader, util, uiUtil, cookies, abstractFilesystemAccess, q, module, transformStyles) {
+define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'abstractFilesystemAccess', 'module', 'transformStyles'],
+    function ($, zimArchiveLoader, util, uiUtil, cookies, abstractFilesystemAccess, module, transformStyles) {
 
         /**
          * Maximum number of articles to display in a search
          * @type Integer
          */
-        var MAX_SEARCH_RESULT_SIZE = module.config().results; //This is set in init.js
+        var MAX_SEARCH_RESULT_SIZE = params['results']; //This value is controlled in init.js like all params values
 
         //TESTING
         // Get the app's installation folder.
@@ -223,7 +223,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'abstractFile
             params['relativeFontSize'] += 5;
             document.getElementById('articleContent').contentDocument.body.style.fontSize = params['relativeFontSize'] + "%";
             document.getElementById('lblZoom').innerHTML = params['relativeFontSize'] + "%";
-            document.getElementById('lblZoom').style = "position:absolute;right: " + window.innerWidth / 3 + "px;bottom:5px;z-index:1050;";
+            document.getElementById('lblZoom').style = "position:absolute;right: " + window.innerWidth / 3 + "px;bottom:5px;z-index:50;";
             setTimeout(function () {
                 document.getElementById('lblZoom').innerHTML = "";
             }, 1000);
@@ -234,7 +234,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'abstractFile
             params['relativeFontSize'] -= 5;
             document.getElementById('articleContent').contentDocument.body.style.fontSize = params['relativeFontSize'] + "%";
             document.getElementById('lblZoom').innerHTML = params['relativeFontSize'] + "%";
-            document.getElementById('lblZoom').style = "position:absolute;left: " + window.innerWidth / 3 + "px;bottom:5px;z-index:1050;";
+            document.getElementById('lblZoom').style = "position:absolute;left: " + window.innerWidth / 3 + "px;bottom:5px;z-index:50;";
             setTimeout(function () {
                 document.getElementById('lblZoom').innerHTML = "";
             }, 1000);
@@ -1888,7 +1888,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'abstractFile
                                 callback(sliceID, sliceCount, sliceEnd, mimetype, util.uintToString(content));
                             }
                         });
-                    }).fail(function (e) {
+                    }).catch(function (e) {
                         sliceCount++;
                         console.error("Could not find DirEntry for image:" + title, e);
                         countImages++;
@@ -2001,7 +2001,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'abstractFile
                 $('#articleContent').contents().find('body').html("");
                 readArticle(dirEntry);
             }
-        }).fail(function() { alert("Error reading article with title " + title); });
+        }).catch(function() { alert("Error reading article with title " + title); });
     }
     
     function goToRandomArticle() {

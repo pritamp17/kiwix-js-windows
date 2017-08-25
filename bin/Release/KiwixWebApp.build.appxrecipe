@@ -478,9 +478,6 @@
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\jquery-3.2.1.slim.js">
       <PackagePath>www\js\lib\jquery-3.2.1.slim.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\q.js">
-      <PackagePath>www\js\lib\q.js</PackagePath>
-    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\require.js">
       <PackagePath>www\js\lib\require.js</PackagePath>
     </AppxPackagedFile>

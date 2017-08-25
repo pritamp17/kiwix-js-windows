@@ -32,7 +32,7 @@
     <AppXManifest Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\bin\Release\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-08-25T07:30:02.334</Modified>
+      <Modified>2017-08-25T09:45:19.932</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
@@ -603,15 +603,15 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\app.js">
       <PackagePath>www\js\app.js</PackagePath>
-      <Modified>2017-08-25T07:29:49.460</Modified>
+      <Modified>2017-08-25T09:30:06.278</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\init.js">
       <PackagePath>www\js\init.js</PackagePath>
-      <Modified>2017-08-24T21:46:57.488</Modified>
+      <Modified>2017-08-25T08:31:13.779</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\abstractFilesystemAccess.js">
       <PackagePath>www\js\lib\abstractFilesystemAccess.js</PackagePath>
-      <Modified>2017-07-19T09:47:26.740</Modified>
+      <Modified>2017-08-25T09:10:31.572</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\bootstrap.min.js">
       <PackagePath>www\js\lib\bootstrap.min.js</PackagePath>
@@ -624,10 +624,6 @@
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\jquery-3.2.1.slim.js">
       <PackagePath>www\js\lib\jquery-3.2.1.slim.js</PackagePath>
       <Modified>2017-07-10T18:00:56.198</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\q.js">
-      <PackagePath>www\js\lib\q.js</PackagePath>
-      <Modified>2017-07-19T09:47:27.642</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\require.js">
       <PackagePath>www\js\lib\require.js</PackagePath>
@@ -647,7 +643,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\util.js">
       <PackagePath>www\js\lib\util.js</PackagePath>
-      <Modified>2017-08-21T17:37:08.914</Modified>
+      <Modified>2017-08-25T09:20:07.081</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\xzdec.js">
       <PackagePath>www\js\lib\xzdec.js</PackagePath>
@@ -655,7 +651,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\xzdec_wrapper.js">
       <PackagePath>www\js\lib\xzdec_wrapper.js</PackagePath>
-      <Modified>2017-07-19T09:47:28.331</Modified>
+      <Modified>2017-08-25T09:24:42.491</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\zimArchive.js">
       <PackagePath>www\js\lib\zimArchive.js</PackagePath>
@@ -671,7 +667,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\lib\zimfile.js">
       <PackagePath>www\js\lib\zimfile.js</PackagePath>
-      <Modified>2017-08-23T09:11:05.884</Modified>
+      <Modified>2017-08-25T09:22:38.087</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\www\js\MathJax\config\config.js">
       <PackagePath>www\js\MathJax\config\config.js</PackagePath>
@@ -1528,7 +1524,7 @@
     <AppxPackagedFile Include="C:\Users\geoff\Source\Repos\kiwix-js-windows\bin\Release\ReverseMap\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-08-24T21:06:07.078</Modified>
+      <Modified>2017-08-25T09:45:19.745</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
