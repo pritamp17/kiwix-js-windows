@@ -1350,7 +1350,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'abstractFile
                     blobArray.push(newURL);
                     injectCSS(); //DO NOT move this: it must run within .then function to pass correct values
                 });
-            }).fail(function (e) {
+            }).catch(function (e) {
                 console.error("could not find DirEntry for CSS : " + title, e);
                 //blobArray[index] = title;
                 blobArray.push(title);
