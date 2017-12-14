@@ -117,8 +117,8 @@ define([], function() {
             if (params.themeChanged) {
                 params.themeChanged = false;
                 if (history.state !== null) { 
-                var thisURL = decodeURIComponent(history.state.title); 
-                goToArticle(thisURL);
+                    var thisURL = decodeURIComponent(history.state.title);
+                    goToArticle(thisURL);
                 }
             }
         })`;
