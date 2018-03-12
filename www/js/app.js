@@ -144,6 +144,12 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                 $('#findText').click();
                 return false;
             }
+            //Ctrl-P to patch printing support for apps that do not have access to browser printing
+            if (e.ctrlKey && e.which == 80) {
+                //window.frames[0].frameElement.contentDocument.execCommand("print", false, null);
+                uiUtil.printUWP;
+                return true;
+            }
         });
 
         //Establish some variables with global scope
@@ -1960,6 +1966,12 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                 if ((e.ctrlKey || e.altKey) && e.which == 70) {
                     $('#findText').click();
                     return false;
+                }
+                //Ctrl-P to patch printing support for apps that do not have access to browser printing
+                if (e.ctrlKey && e.which == 80) {
+                    //window.frames[0].frameElement.contentDocument.execCommand("print", false, null);
+                    uiUtil.printUWP();
+                    return true;
                 }
             }), false;
 

@@ -404,3 +404,15 @@ pre {
         float: left;
     }*/
 }
+
+/*@media print {
+    .modal {
+        display: block;
+    }
+    .dropup {
+        display: none;
+    }
+    .dropdown-menu {
+        display: none;
+    }
+}*/

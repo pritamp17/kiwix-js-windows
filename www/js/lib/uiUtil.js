@@ -149,7 +149,67 @@ define([], function() {
         }
     }
 
+    function onPrintTaskRequested(printEvent) {
+        var printTask = printEvent.request.createPrintTask("Kiwix Article", function (args) {
+            //var innerDocument = document.getElementById('articleContent');
+            var innerDocument = window.frames[0].frameElement.contentDocument;
+            var innerDocument = innerDocument ? innerDocument.documentElement.innerHTML : null;
+            if (!innerDocument) { console.log("*** There is nothing to print! ***"); return; }
+            //var modalDiv = document.getElementById("myModal");
+            //var saveModal = modalDiv.innerHTML;
+            //modalDiv.innerHTML = innerDocument;
+            //var printDetailedOptions = Windows.Graphics.Printing.OptionDetails.PrintTaskOptionDetails.getFromPrintTaskOptions(printTask.options);
+            //printTask.options.displayedOptions.clear();
+            //printTask.options.displayedOptions.push(
+            //    //Windows.Graphics.Printing.StandardPrintTaskOptions.customPageRanges,
+            //    Windows.Graphics.Printing.StandardPrintTaskOptions.copies,
+            //    Windows.Graphics.Printing.StandardPrintTaskOptions.mediaSize,
+            //    Windows.Graphics.Printing.StandardPrintTaskOptions.orientation,
+            //    Windows.Graphics.Printing.StandardPrintTaskOptions.duplex);
+            //printTask.options.displayedOptions.append(Windows.Graphics.Printing.StandardPrintTaskOptions.customPageRanges);
 
+            var page = document.createDocumentFragment();
+            var content = document.createElement('html');
+            content.innerHTML = innerDocument;
+            page.appendChild(content);
+
+            var deferral = args.getDeferral();
+
+            // Register the handler for print task completion event
+            printTask.addEventListener("completed", onPrintTaskCompleted);
+
+            MSApp.getHtmlPrintDocumentSourceAsync(page).then(function (source) {
+                args.setSource(source);
+                //source.pageRange = "1-2";
+                //source.trySetPageRange("1-2");
+                //window.msTemplatePrinter.pageFrom = 1;
+                //window.msTemplatePrinter.pageTo = 2;
+                deferral.complete();
+                //modalDiv.innerHTML = saveModal;
+                content.innerHTML = "";
+            });
+        });
+    }
+
+    function onPrintTaskCompleted(printTaskCompletionEvent) {
+        // Notify the user about the failure
+        if (printTaskCompletionEvent.completion === Windows.Graphics.Printing.PrintTaskCompletion.failed) {
+            console.log("*** Failed to print! ***");
+        } else {
+            console.log("Document was sent to printer");
+        }
+    }
+
+    function printUWP() {
+        if (typeof Windows === "undefined") return;
+        if (!(Windows.Graphics && Windows.Graphics.Printing && Windows.Graphics.Printing.PrintManager)) return;
+        var printManager = Windows.Graphics.Printing.PrintManager.getForCurrentView();
+        // Register for Print Contract
+        printManager.addEventListener("printtaskrequested", onPrintTaskRequested);
+        Windows.Graphics.Printing.PrintManager.showPrintUIAsync();
+    }
+
+    
     /**
      * Functions and classes exposed by this module
      */
@@ -161,6 +221,7 @@ define([], function() {
         makeReturnLink: makeReturnLink,
         poll: poll,
         clear: clear,
-        XHR: XHR
+        XHR: XHR,
+        printUWP: printUWP
     };
 });
