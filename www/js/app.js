@@ -968,6 +968,15 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                 $('#serviceWorkerStatus').removeClass("apiAvailable apiUnavailable")
                     .addClass("apiUnavailable");
             }
+            if (isWebAssemblyAvailable()) {
+                $('#webAssemblyStatus').html("WebAssembly available");
+                $('#webAssemblyStatus').removeClass("apiAvailable apiUnavailable")
+                            .addClass("apiAvailable");
+            } else {
+                $('#webAssemblyStatus').html("WebAssembly unavailable");
+                $('#webAssemblyStatus').removeClass("apiAvailable apiUnavailable")
+                            .addClass("apiUnavailable");
+            }
         }
 
         var contentInjectionMode;
@@ -1111,6 +1120,15 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
         }
 
         /**
+     * Tells if the WebAssembly technology is available
+     * Based on https://tests.caniuse.com/?feat=wasm
+     * @returns {Boolean}
+     */
+    function isWebAssemblyAvailable() {
+        return 'WebAssembly' in window && typeof WebAssembly.compile === 'function';
+    }
+    
+    /**
          * Tells if the ServiceWorker is registered, and ready to capture HTTP requests
          * and inject content in articles.
          * @returns {Boolean}
