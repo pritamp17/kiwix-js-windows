@@ -1747,7 +1747,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                                 console.log("Article retrieved from storage cache...");
                                 displayArticleInForm(dirEntry, htmlContent);
                             } else {
-                                selectedArchive.readArticle(dirEntry, displayArticleInForm);
+                                selectedArchive.readUtf8File(dirEntry, displayArticleInForm);
                             }
                         });
                 }
@@ -1768,7 +1768,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                             displayArticleInForm(dirEntry, htmlContent);
                         }, 100);
                     } else {
-                        selectedArchive.readArticle(dirEntry, displayArticleInForm);
+                        selectedArchive.readUtf8File(dirEntry, displayArticleInForm);
                     }
                 }
             }
