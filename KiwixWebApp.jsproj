@@ -132,6 +132,7 @@
     <Content Include="images\Wide310x150Logo.scale-150.png" />
     <Content Include="images\Wide310x150Logo.scale-200.png" />
     <Content Include="images\Wide310x150Logo.scale-400.png" />
+    <Content Include="www\xzdec.wasm" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="www\-\static\main.css" />
     <Content Include="www\-\s\css_modules\content.parsoid.css" />
