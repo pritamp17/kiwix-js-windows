@@ -116,6 +116,7 @@ define(['q'], function(q) {
             if (data.length > that._chunkSize)
                 data = data.slice(0, that._chunkSize);
             // For some reason, xzdec.writeArrayToMemory does not seem to be available, and is equivalent to xzdec.HEAP8.set
+            //xzdec.writeArrayToMemory(data, xzdec._get_in_buffer(that._decHandle));
             xzdec.HEAP8.set(data, xzdec._get_in_buffer(that._decHandle));
             that._inStreamPos += data.length;
             xzdec._set_new_input(that._decHandle, data.length);

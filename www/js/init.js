@@ -45,7 +45,7 @@ params['rememberLastPage'] = getCookie('rememberLastPage') != null ? getCookie('
 params['useMathJax'] = getCookie('useMathJax') != null ? getCookie('useMathJax') : true; //Set default to true to display math formulae with MathJax, false to use fallback SVG images only
 //params['showFileSelectors'] = getCookie('showFileSelectors') != null ? getCookie('showFileSelectors') : false; //Set to true to display hidden file selectors in packaged apps
 params['showFileSelectors'] = false; //This will cause file selectors to be hidden on each load of the app (by ignoring cookie)
-params['xzMaxJobs'] = 2; // Controls the maximum number of jobs that can be sent simultaneously to the decompressor
+params['xzMaxJobs'] = 1; // Controls the maximum number of jobs that can be sent simultaneously to the decompressor
                          // WARNING: setting this value too high can crash the app: see note at head of zimArchive.js 
 
 
