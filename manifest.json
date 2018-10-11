@@ -1,0 +1,42 @@
+{
+    "manifest_version": 2,
+    "name": "Kiwix JS",
+    "version": "2.5",
+    "description": "Kiwix JS Offline Wikipedia reader",
+    "icons": {
+        "16": "www/img/icons/kiwix-16.png",
+        "19": "www/img/icons/kiwix-19.png",
+        "32": "www/img/icons/kiwix-32.png",
+        "38": "www/img/icons/kiwix-38.png",
+        "48": "www/img/icons/kiwix-48.png",
+        "64": "www/img/icons/kiwix-64.png",
+        "90": "www/img/icons/kiwix-90.png",
+        "128": "www/img/icons/kiwix-128.png"
+    },
+    "browser_action": {
+        "default_icon": {
+            "16": "www/img/icons/kiwix-16.png",
+            "19": "www/img/icons/kiwix-19.png",
+            "32": "www/img/icons/kiwix-32.png",
+            "38": "www/img/icons/kiwix-38.png",
+            "64": "www/img/icons/kiwix-64.png"
+        },
+        "default_title": "Kiwix"
+    },
+    "applications": {
+        "gecko": {
+            "id": "kiwix-html5-unlisted@kiwix.org"
+        }
+    },
+    "background": {
+        "page": "background.html",
+        "persistent": true
+    },
+    "author": "mossroy",
+    "homepage_url": "http://www.kiwix.org",
+    "offline_enabled": true,
+    "-ms-preload": {
+        "backgroundScript": "backgroundScriptsAPIBridge.js",
+        "contentScript": "contentScriptsAPIBridge.js"
+    }
+}
