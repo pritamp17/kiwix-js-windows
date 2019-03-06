@@ -34,7 +34,7 @@ params['version'] = "0.9.9.88 Wikivoyage Beta-dev"; //DEV: do not set this dynam
 params['packagedFile'] = "wikivoyage_en.zim"; //For packaged Kiwix JS (e.g. with Wikivoyage file), set this to the filename (for split files, give the first chunk *.zimaa) and place file(s) in default storage
 params['fileVersion'] = "wikivoyage_en_all_novid_2019-03 (01-Mar-2019)"; //Use generic name for actual file, and give version here
 params['cachedStartPage'] = "Main_Page.html" || false; //If you have cached the start page for quick start, give its URI here
-params['kiwixDownloadLink'] = "https://download.kiwix.org/zim/"; //Include final slash
+params['kiwixDownloadLink'] = "https://download.kiwix.org/zim/wikivoyage/"; //Include final slash
 
 params['results'] = params['results'] || 50; //Number of search results to display
 params['relativeFontSize'] = ~~(getCookie('relativeFontSize') || 100); //Sets the initial font size for articles (as a percentage) - user can adjust using zoom buttons
