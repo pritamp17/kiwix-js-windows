@@ -1747,6 +1747,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                                 this.style.borderColor = '';
                                 this.style.borderStyle = '';
                             });
+                            $('#myModal').modal('hide');
                             document.getElementById('btnConfigure').click();
                             window.location.href = "#displaySettingsDiv";
                         });
