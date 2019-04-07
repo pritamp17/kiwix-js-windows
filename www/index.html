@@ -478,9 +478,10 @@
                                 <div id="displayThemeDiv" class="panel panel-info" style="clear: left;">
                                     <div class="panel-heading">Dark mode:</div>
                                     <div class="panel-body">
-                                        <label class="checkbox">
+                                        <label class="switch">
                                             <input type="checkbox" name="cssUIDarkTheme" id="cssUIDarkThemeCheck">
-                                            <b>Set dark mode for User Interface</b>: [<span id="cssUIDarkThemeState"></span>] (<i>auto</i> mode uses UWP system Settings if available)
+                                            <span class="slider round"></span>
+                                            <span class="lblText"><b>Set dark mode for User Interface</b>: [<span id="cssUIDarkThemeState"></span>] (<i>auto</i> mode uses UWP system Settings if available)</span>
                                         </label>
                                         <label class="checkbox">
                                             <input type="checkbox" name="cssWikiDarkTheme" id="cssWikiDarkThemeCheck">
@@ -516,9 +517,10 @@
                                 <div class="panel panel-info" id="displaySettingsDiv">
                                     <div class="panel-heading">Display options:</div>
                                     <div class="panel-body">
-                                        <label class="checkbox">
+                                        <label class="switch">
                                             <input type="checkbox" name="hideToolbar" id="hideToolbarCheck">
-                                            <b>Hide top toolbar while scrolling</b> (tap <span class="glyphicon glyphicon-arrow-up"></span> once to reveal)
+                                            <span class="slider round"></span>
+                                            <span class="lblText"><b>Hide top toolbar while scrolling</b> (tap <span class="glyphicon glyphicon-arrow-up"></span> once to reveal)</span>
                                         </label>
                                         <label oninput="document.getElementById('spinnerVal').innerHTML = relativeUIFontSizeSlider.value + '%';" style="width: 80%;">
                                             <b>Change font size for the User Interface:</b>
