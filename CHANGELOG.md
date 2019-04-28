@@ -1,4 +1,15 @@
-## Release 0.9.9.89 Wikivoyage (beta)
+## Release 0.9.9.90 (beta)
+* FIX: Remembered last page is now properly blanked on new archive load
+* FIX: Number of stylesheets retrieved from ZIM was not being counted properly, causing some pages to load twice
+* FIX: The article content div is now hidden until the HTML for the requested article is injected 
+
+## Release 0.9.9.89 (beta)
+* FIX: Fixed regression preventing use of download library
+* FIX: Fixed problems searching for dirEntries with empty titles in new ZIMs
+* FIX: Correctly handle anchor links with a single #
+* ENHANCEMENT: Improved styling of checkboxes in light and dark modes 
+
+## Release 0.9.9.88 (beta)
 * ENHANCEMENT: Article can now be sent to device's browser for reading, side-by-side viewing, printing
 * ENHANCEMENT: A breakout icon can optionally be shown on each page to enable sending page to browser (see Settings)
 * ENHANCEMENT: A new "auto" setting for dark mode and dark theme follows the system default for UWP apps
