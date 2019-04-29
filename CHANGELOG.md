@@ -1,15 +1,7 @@
-## Release 0.9.9.90 (beta)
-* FIX: Remembered last page is now properly blanked on new archive load
-* FIX: Number of stylesheets retrieved from ZIM was not being counted properly, causing some pages to load twice
-* FIX: The article content div is now hidden until the HTML for the requested article is injected 
-
-## Release 0.9.9.89 (beta)
-* FIX: Fixed regression preventing use of download library
-* FIX: Fixed problems searching for dirEntries with empty titles in new ZIMs
-* FIX: Correctly handle anchor links with a single #
-* ENHANCEMENT: Improved styling of checkboxes in light and dark modes 
-
-## Release 0.9.9.88 (beta)
+## Release 0.9.9.90 Wikivoyage (beta)
+* CRITICAL FIX: Remembered last page is now properly blanked on new archive load
+* CRITICAL FIX: Fixed regression preventing use of download library
+* UPDATE: April 2019 update of Wikvoyage ZIM archive to wikivoyage_en_all_novid_2019-04.zim 
 * ENHANCEMENT: Article can now be sent to device's browser for reading, side-by-side viewing, printing
 * ENHANCEMENT: A breakout icon can optionally be shown on each page to enable sending page to browser (see Settings)
 * ENHANCEMENT: A new "auto" setting for dark mode and dark theme follows the system default for UWP apps
@@ -18,7 +10,8 @@
 * ENHANCEMENT: Streamlined the process for adding other languages of packaged app ZIM files
 * ENHANCEMENT: Language and date selectors in Library are now responsive to each other
 * ENHANCEMENT: Download link more clearly signalled
-* UPDATE: Deal with re-organized stylesheets in mwoffliner ZIMs
+* ENHANCEMENT: Improved styling of checkboxes in light and dark modes 
+* ENHANCEMENT: Deal with re-organized stylesheets in mwoffliner ZIMs
 * FIX: Fixed regression caused by removal of timeout for find in article function
 * FIX: Fixed problems searching for dirEntries with empty titles in new ZIMs
 * FIX: Correctly handle anchor links with a single #
@@ -26,6 +19,8 @@
 * FIX: Prevent crash if changing language selector on "wrong" screen
 * FIX: Prevent timeout-related crashes on slower devices
 * FIX: Prevent unusable app state after clicking non-Roman alphabet button in Archive Index
+* FIX: Number of stylesheets retrieved from ZIM was not being counted properly, causing some pages to load twice
+* FIX: The article content div is now hidden until the HTML for the requested article is injected 
 
 ## Release 0.9.9.87 Wikivoyage (beta)
 * ENHANCEMENT: Support for playing media (video/audio) in the ZIM if the device has the required codec
