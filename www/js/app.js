@@ -2504,7 +2504,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                 //Inject htmlArticle into iframe
                 uiUtil.clear(); //Void progress messages
                 //Inject base tag into html
-                htmlArticle = htmlArticle.replace(/(<head[^>]*>\s*)/i, '$1<base href="' + baseUrl + '" />\r\n');
+                //htmlArticle = htmlArticle.replace(/(<head[^>]*>\s*)/i, '$1<base href="' + baseUrl + '" />\r\n');
                 // Extract any css classes from the html tag (they will be stripped when injected in iframe with .innerHTML)
                 var htmlCSS = htmlArticle.match(/<html[^>]*class\s*=\s*["']\s*([^"']+)/i);
                 htmlCSS = htmlCSS ? htmlCSS[1] : '';
@@ -2675,23 +2675,11 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                             if (href.length === 0) {
                                 // It's a link with an empty href, pointing to the current page.
                                 // Because of the base tag, we need to modify it
-                                anchor.addEventListener('click', function (e) {
-                                    e.preventDefault();
-                                });
+                                //anchor.addEventListener('click', function (e) {
+                                //    e.preventDefault();
+                                //});
                             } else if (regexpLocalAnchorHref.test(href)) {
-                                // It's an anchor link : we need to make it work with javascript because of the base tag
-                                var anchorRef = href.replace(regexpLocalAnchorHref, '$1');
-                                // DEV: If jQuery mode ever supports JS-in-the-ZIM, the check for an onclick event may need to be revisited
-                                var onClickAttr = anchor.getAttribute('onclick');
-                                anchor.addEventListener('click', function (e) {
-                                    var iframeWindow = document.getElementById('articleContent').contentWindow;
-                                    if (anchorRef)
-                                        iframeWindow.location.hash = anchorRef;
-                                    else if (!onClickAttr)
-                                        // It's just a single # and there is no onclick in the HTML, so scroll to top
-                                        iframeWindow.scrollTo({ top: 0, behavior: 'smooth' });
-                                    e.preventDefault();
-                                });
+                                // It's an anchor link : do nothing
                             } else if (anchor.protocol !== currentProtocol ||
                                 anchor.host !== currentHost) {
                                 // It's an external URL : we should open it in a new tab
@@ -2700,6 +2688,8 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                                 // It's a link to an article or file in the ZIM
                                 var uriComponent = uiUtil.removeUrlParameters(zimUrl);
                                 var decodedURL = decodeURIComponent(uriComponent);
+                                //Get rid of any absolute or relative prefixes (../, ./../, /../.., etc.)
+                                decodedURL = decodedURL.replace(/^[.\/]*([\S\s]+)$/, '$1');
                                 var contentType;
                                 var downloadAttrValue;
                                 // Some file types need to be downloaded rather than displayed (e.g. *.epub)
