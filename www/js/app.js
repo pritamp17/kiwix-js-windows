@@ -2671,7 +2671,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                             if (href === null || href === undefined) return;
                             // Compute current link's url (with its namespace), if applicable
                             // NB We need to access 'anchor.href' here because, unlike 'anchor.getAttribute("href")', it contains the fully qualified URL [kiwix-js #432]
-                            var zimUrl = regexpZIMUrlWithNamespace.test(anchor.href) ? anchor.href.match(regexpZIMUrlWithNamespace)[1] : '';
+                            //var zimUrl = regexpZIMUrlWithNamespace.test(anchor.href) ? anchor.href.match(regexpZIMUrlWithNamespace)[1] : '';
                             if (href.length === 0) {
                                 // It's a link with an empty href, pointing to the current page.
                                 // Because of the base tag, we need to modify it
@@ -2686,10 +2686,10 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                                 anchor.target = '_blank';
                             } else {
                                 // It's a link to an article or file in the ZIM
-                                var uriComponent = uiUtil.removeUrlParameters(zimUrl);
+                                var uriComponent = uiUtil.removeUrlParameters(href);
                                 var decodedURL = decodeURIComponent(uriComponent);
                                 //Get rid of any absolute or relative prefixes (../, ./../, /../.., etc.)
-                                decodedURL = decodedURL.replace(/^[.\/]*([\S\s]+)$/, '$1');
+                                decodedURL = decodedURL.replace(/^[.\/]*([\S\s]+)$/, 'A/$1');
                                 var contentType;
                                 var downloadAttrValue;
                                 // Some file types need to be downloaded rather than displayed (e.g. *.epub)
