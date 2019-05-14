@@ -887,11 +887,11 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                 var link = doc.createElement("link");
                 link.setAttribute("rel", "stylesheet");
                 link.setAttribute("type", "text/css");
-                link.setAttribute("href", determinedWikiTheme == "dark" ? treePath + "-/s/style-dark.css" : treePath + "-/s/style-dark-invert.css");
+                link.setAttribute("href", determinedWikiTheme == "dark" ? "-/s/style-dark.css" : "-/s/style-dark-invert.css");
                 doc.head.appendChild(link);
-                if (breakoutLink) breakoutLink.src = treePath + 'img/icons/new_window_lb.svg';
+                if (breakoutLink) breakoutLink.src = '/img/icons/new_window_lb.svg';
             } else {
-                if (breakoutLink) breakoutLink.src = treePath + 'img/icons/new_window.svg';
+                if (breakoutLink) breakoutLink.src = '/img/icons/new_window.svg';
             }
             document.getElementById('darkInvert').style.display = determinedWikiTheme == 'light' ? 'none' : 'inline';
         }
@@ -2323,7 +2323,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
             var regexpGeoLocationDE = /<span\s+class\s?=\s?"[^"]+?listing-coordinates[\s\S]+?latitude">([^<]+)[\s\S]+?longitude">([^<]+)<[\s\S]+?(<span[^>]+listing-name[^>]+>([^<]+)<\/span>)/ig;
             htmlArticle = htmlArticle.replace(regexpGeoLocationDE, function (match, latitude, longitude, href, id) {
                 return '<a href="bingmaps:?collection=point.' + latitude + '_' + longitude + '_' + encodeURIComponent(id.replace(/_/g, " ")) +
-                    '">\r\n<img alt="Map marker" title="Diesen Ort auf einer Karte zeigen" src="../img/icons/map_marker-18px.png" style="position:relative !important;top:-5px !important;margin-top:5px !important" />\r\n</a>' + href;
+                    '">\r\n<img alt="Map marker" title="Diesen Ort auf einer Karte zeigen" src="img/icons/map_marker-18px.png" style="position:relative !important;top:-5px !important;margin-top:5px !important" />\r\n</a>' + href;
             });
 
             //Adapt English Wikivoyage POI data format
@@ -2331,7 +2331,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
             htmlArticle = htmlArticle.replace(regexpGeoLocationEN, function (match, p1, latitude, longitude, p4, p5, p6, id) {
                 return p1 + "bingmaps:?collection=point." + latitude + "_" + longitude + "_" +
                     encodeURIComponent(id.replace(/_/g, " ")).replace(/\.(\w\w)/g, "%$1") +
-                    (p5 ? "\&lvl=" + p5 : "") + p4.replace(/style\s?="\s?background:[^"]+"\s?/i, "") + '<img alt="Map marker" title="Show this place on a map" src="../img/icons/map_marker-18px.png" style="position:relative !important;top:-5px !important;" />' + p6 + id;
+                    (p5 ? "\&lvl=" + p5 : "") + p4.replace(/style\s?="\s?background:[^"]+"\s?/i, "") + '<img alt="Map marker" title="Show this place on a map" src="img/icons/map_marker-18px.png" style="position:relative !important;top:-5px !important;" />' + p6 + id;
             });
 
             //Clean up remaining geo: links
@@ -2378,6 +2378,8 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                 for (var i = 0; i < arr.length; i++) {
                     var zimLink = arr[i].match(/data-kiwixurl\s*=\s*['"]([^'"]+)/i);
                     zimLink = zimLink ? decodeURIComponent(zimLink[1]) : '';
+                    //Remove path
+                    zimLink = zimLink.replace(/^[.\/]*([\S\s]+)$/, '$1');
                     /* zl = zimLink; zim = zimType; cc = cssCache; cs = cssSource; i  */
                     var filteredLink = transformStyles.filterCSS(zimLink, zimType, cssCache, cssSource, i);
                     if (filteredLink.rtnFunction == "injectCSS") {
@@ -2461,7 +2463,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                     var determinedTheme = params.cssTheme == 'auto' ? cssUIThemeGetOrSet('auto', true) : params.cssTheme;
                     cssArray$ += (determinedTheme == "dark") ? '<link href="-/s/style-dark.css" rel="stylesheet" type="text/css">\r\n' : (params.cssTheme == "invert") ? '<link href="-/s/style-dark-invert.css" rel="stylesheet" type="text/css">\r\n' : "";
                     //Add required path in front of injected styles (i.e. those that have no ./ or ../../.. etc)
-                    cssArray$ = cssArray$.replace(/(\bhref\s*=\s*["']\s*)(?![./]+|blob:)/ig, "$1" + treePath);
+                    //cssArray$ = cssArray$.replace(/(\bhref\s*=\s*["']\s*)(?![./]+|blob:)/ig, "$1" + treePath);
                     //Ensure all headings are open
                     //htmlArticle = htmlArticle.replace(/class\s*=\s*["']\s*client-js\s*["']\s*/i, "");
                     htmlArticle = htmlArticle.replace(/\s*(<\/head>)/i, cssArray$ + "$1");
@@ -2689,7 +2691,9 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                                 var uriComponent = uiUtil.removeUrlParameters(href);
                                 var decodedURL = decodeURIComponent(uriComponent);
                                 //Get rid of any absolute or relative prefixes (../, ./../, /../.., etc.)
-                                decodedURL = decodedURL.replace(/^[.\/]*([\S\s]+)$/, 'A/$1');
+                                decodedURL = decodedURL.replace(/^[.\/]*([\S\s]+)$/, '$1');
+                                //Add article namespace if there is no namespace
+                                decodedURL = regexpZIMUrlWithNamespace.test(decodedURL) ? decodedURL : 'A/' + decodedURL;
                                 var contentType;
                                 var downloadAttrValue;
                                 // Some file types need to be downloaded rather than displayed (e.g. *.epub)
@@ -2759,7 +2763,7 @@ define(['jquery', 'zimArchiveLoader', 'util', 'uiUtil', 'cookies', 'q', 'module'
                     script.type = "text/javascript";
                     //script.src = treePath + "js/MathJax/MathJax.js?config=TeX-AMS_HTML-full,config";
                     //script.src = treePath + "js/MathJax/MathJax.js?config=TeX-AMS_SVG-full";
-                    script.src = treePath + "js/MathJax/MathJax.js?config=TeX-AMS_HTML-full";
+                    script.src = "js/MathJax/MathJax.js?config=TeX-AMS_HTML-full";
                     if (containsMathTeX || containsMathTeXRaw) script.innerHTML = 'MathJax.Hub.Queue(["Typeset", MathJax.Hub]); \
                             console.log("Typesetting maths with MathJax");';
                     containsMathTeXRaw = false; //Prevents doing a second Typeset run on the same document
