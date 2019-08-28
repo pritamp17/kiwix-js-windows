@@ -63,7 +63,7 @@
       "zip"
     ],
     "files": [
-      "service-worker.js",
+      "pwabuilder-sw.js",
       "index.html",
       "CHANGELOG.md",
       "LICENCE",
