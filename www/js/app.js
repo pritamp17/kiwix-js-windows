@@ -1290,7 +1290,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                         // Create the MessageChannel and send 'init'
                         initOrKeepAliveServiceWorker();
                     } else {
-                        navigator.serviceWorker.register('../pwqbuilder-sw.js').then(function (reg) {
+                        navigator.serviceWorker.register('../pwabuilder-sw.js').then(function (reg) {
                             // The ServiceWorker is registered
                             console.log('Service-worker.js is registered with a scope of ' + reg.scope);
                             serviceWorkerRegistration = reg;
