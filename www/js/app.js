@@ -929,9 +929,9 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             var findInArticle = document.getElementById('findInArticle');
             var oldScrollY = iframe.contentWindow.scrollY;
             var newScrollY;
-            header.style.transition = "top 500ms";
-            iframe.style.transition = "top 300ms";
-            footer.style.transition = "top 500ms";
+            header.style.transition = "transform 500ms";
+            iframe.style.transition = "transform 600ms";
+            footer.style.transition = "transform 500ms";
             iframe.style.zIndex = 0;
 
             var scrollFunction = function () {
@@ -939,25 +939,27 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                 // Hide the toolbars if user has scrolled and search elements are not selected
                 if (newScrollY - oldScrollY > 0 && document.activeElement !== prefix 
                     && document.activeElement !== findInArticle) {
-                    if (header.style.top !== '0') {
+                    if (!/\(0\)/.test(header.style.transform)) {
                         setTimeout(function() {
                             if (newScrollY > 30) {
-                                header.style.top = '-' + navbarDim.height + 'px';
-                                footer.style.top = footerDim.top + footerDim.height + 'px';
+                                header.style.transform = 'translateY(-' + navbarDim.height + 'px)';
+                                footer.style.transform = 'translateY(' + footerDim.height + 'px)';
                             }
                         }, 500);
                         if (newScrollY - oldScrollY > 0 && newScrollY > 30) {
-                            iframe.style.top = '-' + navbarDim.height + 'px';
+                            //iframe.style.top = '-' + navbarDim.height + 'px';
+                            iframe.style.transform = 'translateY(-' + navbarDim.height + 'px)';
                             document.getElementById('search-article').style.overflowY = "hidden";
                             iframe.style.height = window.innerHeight + navbarDim.height + footerDim.height + 'px';
                         }
                     }
                 } else {
                     header.style.zIndex = 1;
-                    header.style.top = '0';
-                    footer.style.top = window.innerHeight - footerDim.height + 'px';
+                    header.style.transform = 'translateY(0)';
+                    footer.style.transform = 'translateY(0)';
                     if (newScrollY <= 30) {
-                        iframe.style.top = '0';
+                        //iframe.style.top = '0';
+                        iframe.style.transform = 'translateY(0)';
                         iframe.style.height = window.innerHeight;
                     }
                 }
