@@ -49,7 +49,9 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
          * Resize the IFrame height, so that it fills the whole available height in the window
          */
         function resizeIFrame() {
-            $(".articleIFrame").css("height", window.innerHeight + "px");
+            // $(".articleIFrame").css("height", window.innerHeight + "px");
+            var navbarHeight = document.getElementById('navbar').getBoundingClientRect().height;
+            $(".articleIFrame").css("height", window.innerHeight - navbarHeight + "px");
             //Re-enable top-level scrolling
             document.getElementById('top').style.position = "relative";
             scrollbox.style.position = "fixed";
@@ -59,7 +61,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             if (document.getElementById('articleContent').style.display !== "none") {
                 scrollbox.style.position = "relative";
                 scrollbox.style.height = 0;
-                //if (params.hideToolbar) {
+                //if (params.hideToolbars) {
                 //    scrollbox.style.height = ~~document.getElementById('top').getBoundingClientRect().height + "px"; //Cannot be larger or else on Windows Mobile (at least) and probably other mobile, the top bar gets covered by iframe
                 //}
             }
@@ -428,8 +430,9 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             var searchDiv = document.getElementById('row2');
             if (searchDiv.style.display != "none") {
                 setTab();
-                // Return params.hideToolbar to its original state
-                params.hideToolbar = cookies.getItem('hideToolbar') == 'true';
+                // Return params.hideToolbars to its original state
+                params.hideToolbars = cookies.getItem('hideToolbars');
+                params.hideToolbars == 'top' ? 'top' : params.hideToolbars == 'true';
                 checkToolbar();
                 return;
             }
@@ -441,7 +444,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             findInArticle = document.getElementById('findInArticle');
             searchDiv.style.display = "block";
             // Show the toolbar
-            params.hideToolbar = false;
+            params.hideToolbars = false;
             checkToolbar();
             findInArticle.focus();
             localSearch = new util.Hilitor(innerDocument);
@@ -898,50 +901,83 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             this.value = params.maxResults;
             cookies.setItem('maxResults', params.maxResults, Infinity);
         });
-        $('input:checkbox[name=hideToolbar]').on('change', function (e) {
-            params.hideToolbar = this.checked ? true : false;
-            cookies.setItem('hideToolbar', params.hideToolbar, Infinity);
-            if (!params.hideToolbar) uiUtil.systemAlert('Do not hide toolbar:\n\nPlease note that on small screens, Bootstrap may ignore this setting...');
+        $('input:checkbox[name=hideToolbars]').on('change', function (e) {
+            //This code implements a tri-state checkbox
+            // console.log('Before: C:' + (this.checked ? '1 ' : '0 ') + 'I:' + (this.indeterminate ? '1 ' : '0 ') + 'R:' + (this.readOnly ? '1 ' : '0 '));
+            if (this.readOnly) this.checked = this.readOnly = false;
+            else if (!this.checked) this.readOnly = this.indeterminate = true;
+            // if (this.readOnly) { this.checked = true; this.readOnly = false; }
+            // else if (this.checked) this.readOnly = this.indeterminate = true;
+            // console.log('After: C:' + (this.checked ? '1 ' : '0 ') + 'I:' + (this.indeterminate ? '1 ' : '0 ') + 'R:' + (this.readOnly ? '1 ' : '0 '));
+            
+            params.hideToolbars = this.indeterminate ? "top" : this.checked;
+            document.getElementById('hideToolbarsState').innerHTML = params.hideToolbars == "top" ? "top" : params.hideToolbars ? "both" : "never";
+            cookies.setItem('hideToolbars', params.hideToolbars, Infinity);
+            params.hideToolbars = this.checked ? true : false;
+            if (!params.hideToolbars) uiUtil.systemAlert('Please note that on small screens, Bootstrap may ignore this setting...');
             checkToolbar();
         });
 
-        var header = document.getElementById('top');
-        var navbarHeight = document.getElementById('navbar').getBoundingClientRect().height + 'px';
-        var article = document.getElementById('article');
-        var iframe = document.getElementById('articleContent');
-        var prefix = document.getElementById('prefix');
-        var findInArticle = document.getElementById('findInArticle');
-        article.style.transition = "top 300ms";
-
-        // This is the scrollFunction to be attached in checkToolbar()
-        var scrollFunction = function () {
-            iframe.style.zIndex = 0;
-            // Hide the search bar if user has scrolled and search elements are not selected
-            if (document.getElementById('articleContent').contentWindow.scrollY > 20 && document.activeElement != prefix && document.activeElement != findInArticle) {
-                article.style.top = '-' + navbarHeight;
-                header.style.zIndex = -1;
-                //document.getElementById('scrollbox').style.zIndex = 0;
-            } else {
-                //header.style.top = '0';
-                article.style.top = '0';
-                header.style.zIndex = 1;
-            }
-        };
-
         function checkToolbar() {
+            var header = document.getElementById('top');
+            var navbarDim = document.getElementById('navbar').getBoundingClientRect();
+            var article = document.getElementById('article');
+            var iframe = document.getElementById('articleContent');
+            var prefix = document.getElementById('prefix');
+            var footer = document.getElementById('footer');
+            var footerDim = footer.getBoundingClientRect();
+            var findInArticle = document.getElementById('findInArticle');
+            var oldScrollY = iframe.contentWindow.scrollY;
+            var newScrollY;
+            header.style.transition = "top 500ms";
+            iframe.style.transition = "top 300ms";
+            footer.style.transition = "top 500ms";
+            iframe.style.zIndex = 0;
+
+            var scrollFunction = function () {
+                newScrollY = iframe.contentWindow.scrollY;
+                // Hide the toolbars if user has scrolled and search elements are not selected
+                if (newScrollY - oldScrollY > 0 && document.activeElement !== prefix 
+                    && document.activeElement !== findInArticle) {
+                    if (header.style.top !== '0') {
+                        setTimeout(function() {
+                            if (newScrollY > 30) {
+                                header.style.top = '-' + navbarDim.height + 'px';
+                                footer.style.top = footerDim.top + footerDim.height + 'px';
+                            }
+                        }, 500);
+                        if (newScrollY - oldScrollY > 0 && newScrollY > 30) {
+                            iframe.style.top = '-' + navbarDim.height + 'px';
+                            document.getElementById('search-article').style.overflowY = "hidden";
+                            iframe.style.height = window.innerHeight + navbarDim.height + footerDim.height + 'px';
+                        }
+                    }
+                } else {
+                    header.style.zIndex = 1;
+                    header.style.top = '0';
+                    footer.style.top = window.innerHeight - footerDim.height + 'px';
+                    if (newScrollY <= 30) {
+                        iframe.style.top = '0';
+                        iframe.style.height = window.innerHeight;
+                    }
+                }
+                oldScrollY = newScrollY;
+            };
+
             iframe.contentDocument.removeEventListener('scroll', scrollFunction);
-            if (params.hideToolbar) {
+            if (params.hideToolbars) {
                 iframe.contentDocument.addEventListener('scroll', scrollFunction);
                 scrollFunction();
             } else {
                 // Ensure toolbar is restored
-                //article.style.top = '-' + navbarHeight;
-                //header.style.zIndex = 0;
-                //iframe.style.zIndex = -1;
                 setTimeout(function () {
-                    iframe.style.zIndex = 0;
-                    article.style.top = '0';
                     header.style.zIndex = 1;
+                    header.style.top = '0';
+                    footer.style.top = window.innerHeight - footerDim.height + 'px';
+                    iframe.style.top = '0';
+                    //iframe.style.height = window.innerHeight + 'px';
+                    article.style.height = window.innerHeight + 'px';
+                    resizeIFrame();
                 }, 500);
             }
         }
@@ -1070,16 +1106,16 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             var determinedWikiTheme = params.cssTheme == 'auto' ? cssUIThemeGetOrSet('auto', true) : params.cssTheme;
             var breakoutLink = doc.getElementById('breakoutLink');
             // Construct an absolute reference becuase Service Worker needs this
-            var prefix = document.location.href.replace(/index\.html(?:$|[#?].*$)/, '');
+            var prefix = document.location.origin + document.location.pathname.replace(/\/[^/]*$/, '');
             if (determinedWikiTheme != "light") {
                 var link = doc.createElement("link");
                 link.setAttribute("rel", "stylesheet");
                 link.setAttribute("type", "text/css");
-                link.setAttribute("href", prefix + (determinedWikiTheme == "dark" ? '-/s/style-dark.css' : '-/s/style-dark-invert.css'));
+                link.setAttribute("href", prefix + (determinedWikiTheme == "dark" ? '/-/s/style-dark.css' : '/-/s/style-dark-invert.css'));
                 doc.head.appendChild(link);
-                if (breakoutLink) breakoutLink.src = prefix + 'img/icons/new_window_lb.svg';
+                if (breakoutLink) breakoutLink.src = prefix + '/img/icons/new_window_lb.svg';
             } else {
-                if (breakoutLink) breakoutLink.src = prefix + 'img/icons/new_window.svg';
+                if (breakoutLink) breakoutLink.src = prefix + '/img/icons/new_window.svg';
             }
             document.getElementById('darkInvert').style.display = determinedWikiTheme == 'light' ? 'none' : 'inline';
         }
@@ -2778,7 +2814,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
 
             //Preload stylesheets [kiwix-js #149]
             //Set up blobArray of promises
-            var prefix = document.location.href.replace(/index\.html(?:$|[#?].*$)/, '');
+            var prefix = document.location.origin + document.location.pathname.replace(/\/[^/]*$/, '');
             var cssArray = htmlArticle.match(regexpSheetHref);
             var blobArray = [];
             var cssSource = params.cssSource;
@@ -2899,8 +2935,8 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                     cssArray$ = cssArray$.replace(/<link\shref="#"[^>]+>\s*/g, '');
                     //Add dark mode CSS if required
                     var determinedTheme = params.cssTheme == 'auto' ? cssUIThemeGetOrSet('auto', true) : params.cssTheme;
-                    cssArray$ += (determinedTheme == "dark") ? '<link href="' + prefix + '-/s/style-dark.css" rel="stylesheet" type="text/css">\r\n' :
-                        params.cssTheme == "invert" ? '<link href="' + prefix + '-/s/style-dark-invert.css" rel="stylesheet" type="text/css">\r\n' : "";
+                    cssArray$ += (determinedTheme == "dark") ? '<link href="' + prefix + '/-/s/style-dark.css" rel="stylesheet" type="text/css">\r\n' :
+                        params.cssTheme == "invert" ? '<link href="' + prefix + '/-/s/style-dark-invert.css" rel="stylesheet" type="text/css">\r\n' : "";
                     //Ensure all headings are open
                     //htmlArticle = htmlArticle.replace(/class\s*=\s*["']\s*client-js\s*["']\s*/i, "");
                     htmlArticle = htmlArticle.replace(/\s*(<\/head>)/i, cssArray$ + "$1");

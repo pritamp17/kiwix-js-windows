@@ -619,9 +619,9 @@
                                     <div class="panel-heading">Display options:</div>
                                     <div class="panel-body">
                                         <label class="checkbox">
-                                            <input type="checkbox" name="hideToolbar" id="hideToolbarCheck">
+                                            <input type="checkbox" name="hideToolbars" id="hideToolbarsCheck" title="Tap three times for both | top | never">
                                             <span class="checkmark"></span>
-                                            <b>Hide top toolbar while scrolling</b> (tap <span class="glyphicon glyphicon-arrow-up"></span> once to reveal)
+                                            <b>Hide toolbars while scrolling:</b> [ <b><span id="hideToolbarsState"></span></b> ] (scroll slightly up to reveal)
                                         </label>
                                         <label oninput="document.getElementById('spinnerVal').innerHTML = relativeUIFontSizeSlider.value + '%';" style="width: 80%;">
                                             <b>Change font size for the User Interface:</b>
