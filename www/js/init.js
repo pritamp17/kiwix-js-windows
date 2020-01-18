@@ -49,7 +49,7 @@ params['cssCache'] = getCookie('cssCache') != null ? getCookie('cssCache') : tru
 params['cssTheme'] = getCookie('cssTheme') || 'light'; //Set default to 'auto', 'light', 'dark' or 'invert' to use respective themes for articles
 params['cssUITheme'] = getCookie('cssUITheme') || 'light'; //Set default to 'auto', 'light' or 'dark' to use respective themes for UI
 params['imageDisplay'] = getCookie('imageDisplay') != null ? getCookie('imageDisplay') : true; //Set default to display images from Zim
-params['hideToolbars'] = getCookie('hideToolbars') || true; //Set default to true (hides both), 'top' (hides top only), or false (no hiding)
+params['hideToolbars'] = getCookie('hideToolbars') != null ? getCookie('hideToolbars') : true; //Set default to true (hides both), 'top' (hides top only), or false (no hiding)
 params['rememberLastPage'] = getCookie('rememberLastPage') != null ? getCookie('rememberLastPage') : true; //Set default option to remember the last visited page between sessions
 params['useMathJax'] = getCookie('useMathJax') != null ? getCookie('useMathJax') : true; //Set default to true to display math formulae with MathJax, false to use fallback SVG images only
 //params['showFileSelectors'] = getCookie('showFileSelectors') != null ? getCookie('showFileSelectors') : false; //Set to true to display hidden file selectors in packaged apps

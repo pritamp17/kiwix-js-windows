@@ -934,58 +934,61 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             checkToolbar();
         });
 
-        function checkToolbar() {
-            var header = document.getElementById('top');
+        var iframe = document.getElementById('articleContent');
+        var header = document.getElementById('top');
+            
+        var oldScrollY;
+        var newScrollY;
+        var damper = 10;
+            
+        var scrollFunction = function () {
+            damper--;
+            newScrollY = iframe.contentWindow.scrollY;
             var navbarDim = document.getElementById('navbar').getBoundingClientRect();
-            // var article = document.getElementById('article');
-            var iframe = document.getElementById('articleContent');
             var prefix = document.getElementById('prefix');
-            var footer = document.getElementById('footer');
             var footerDim = footer.getBoundingClientRect();
             var findInArticle = document.getElementById('findInArticle');
-            var oldScrollY = iframe.contentWindow.scrollY;
-            var newScrollY;
-            var damper = 10;
+            // Hide the toolbars if user has scrolled and search elements are not selected
+            if (newScrollY - oldScrollY > 0 && document.activeElement !== prefix 
+                && document.activeElement !== findInArticle) {
+                if (damper > 0) return;
+                // If the header and/or footer have not already been hidden
+                if (/\(0p?x?\)/.test(header.style.transform)) {
+                    setTimeout(function() {
+                        damper = 10;
+                        if (newScrollY > 20) {
+                            header.style.transform = 'translateY(-' + navbarDim.height + 'px)';
+                            if (params.hideToolbars === true) // Only hide footer if requested
+                                footer.style.transform = 'translateY(' + footerDim.height + 'px)';
+                        }
+                    }, 200);
+                    if (newScrollY > 20) {
+                        iframe.style.transform = 'translateY(-' + navbarDim.height + 'px)';
+                        // document.getElementById('search-article').style.overflowY = "hidden";
+                        iframe.style.height = window.innerHeight + navbarDim +
+                            (params.hideToolbars === true ? footerDim.height : 0) + 'px';
+                    }
+                }
+            } else {
+                header.style.zIndex = 1;
+                header.style.transform = 'translateY(0)';
+                footer.style.transform = 'translateY(0)';
+                if (newScrollY <= 20) {
+                    iframe.style.transform = 'translateY(0)';
+                    iframe.style.height = window.innerHeight + 'px';
+                }
+            }
+            oldScrollY = newScrollY;
+        };
+
+        function checkToolbar() {
+            var header = document.getElementById('top');
+            var footer = document.getElementById('footer');
+            oldScrollY = iframe.contentWindow.scrollY;
             header.style.transition = "transform 500ms";
             iframe.style.transition = "transform 600ms";
             footer.style.transition = "transform 500ms";
             iframe.style.zIndex = 0;
-
-            var scrollFunction = function () {
-                damper--;
-                newScrollY = iframe.contentWindow.scrollY;
-                // Hide the toolbars if user has scrolled and search elements are not selected
-                if (newScrollY - oldScrollY > 0 && document.activeElement !== prefix 
-                    && document.activeElement !== findInArticle) {
-                    if (damper > 0) return;
-                    // If the header and/or footer have not already been hidden
-                    if (/\(0p?x?\)/.test(header.style.transform)) {
-                        setTimeout(function() {
-                            damper = 10;
-                            if (newScrollY > 20) {
-                                header.style.transform = 'translateY(-' + navbarDim.height + 'px)';
-                                if (params.hideToolbars === true) // Only hide footer if requested
-                                    footer.style.transform = 'translateY(' + footerDim.height + 'px)';
-                            }
-                        }, 200);
-                        if (newScrollY > 20) {
-                            iframe.style.transform = 'translateY(-' + navbarDim.height + 'px)';
-                            // document.getElementById('search-article').style.overflowY = "hidden";
-                            iframe.style.height = window.innerHeight + navbarDim +
-                                (params.hideToolbars === true ? footerDim.height : 0) + 'px';
-                        }
-                    }
-                } else {
-                    header.style.zIndex = 1;
-                    header.style.transform = 'translateY(0)';
-                    footer.style.transform = 'translateY(0)';
-                    if (newScrollY <= 20) {
-                        iframe.style.transform = 'translateY(0)';
-                        iframe.style.height = window.innerHeight + 'px';
-                    }
-                }
-                oldScrollY = newScrollY;
-            };
 
             iframe.contentDocument.removeEventListener('scroll', scrollFunction);
             if (params.hideToolbars) {
