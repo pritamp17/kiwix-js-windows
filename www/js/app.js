@@ -939,6 +939,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
         var oldScrollY;
         var newScrollY;
         var damper = 10;
+        var helper = cookies.getItem('hideToolbar');
             
         var scrollFunction = function () {
             damper--;
@@ -959,6 +960,11 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                             header.style.transform = 'translateY(-' + navbarDim.height + 'px)';
                             if (params.hideToolbars === true) // Only hide footer if requested
                                 footer.style.transform = 'translateY(' + footerDim.height + 'px)';
+                            if (helper) {
+                                uiUtil.systemAlert('New functionality!\n\nWhen you scroll down, toolbars are hidden\n' + 
+                                'Scroll slightly up to show them again\nTurn this behaviour off in Configuration');
+                                helper = false;
+                            }
                         }
                     }, 200);
                     if (newScrollY > 20) {
