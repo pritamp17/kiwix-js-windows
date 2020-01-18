@@ -56,7 +56,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             header.style.zIndex = 1;
             header.style.transform = 'translateY(0)';
             document.getElementById('footer').style.transform = 'translateY(0)';
-            iframe.style.transform = 'translateY(0)';
+            iframe.style.transform = 'translateY(-1px)';
             //iframe.style.height = window.innerHeight - navbarHeight + "px";
             iframe.style.height = window.innerHeight + 'px';
 
@@ -618,11 +618,11 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
             if (!/\(0p?x?\)/.test(header.style.transform)) {
                 header.style.transform = 'translateY(0)';
                 if (iframe.contentWindow.scrollY <= 20)
-                    iframe.style.transform = 'translateY(0)';
+                    iframe.style.transform = 'translateY(-1px)';
                 header.style.zIndex = 1;
                 iframe.style.zIndex = 0;
             } else {
-                iframe.style.transform = 'translateY(0)';
+                iframe.style.transform = 'translateY(-1px)';
                 iframe.contentWindow.scrollTo({
                     top: '0',
                     behavior: 'smooth'
@@ -936,7 +936,6 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
 
         var iframe = document.getElementById('articleContent');
         var header = document.getElementById('top');
-            
         var oldScrollY;
         var newScrollY;
         var damper = 10;
@@ -974,7 +973,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                 header.style.transform = 'translateY(0)';
                 footer.style.transform = 'translateY(0)';
                 if (newScrollY <= 20) {
-                    iframe.style.transform = 'translateY(0)';
+                    iframe.style.transform = 'translateY(-1px)';
                     iframe.style.height = window.innerHeight + 'px';
                 }
             }
@@ -1000,8 +999,9 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                     header.style.zIndex = 1;
                     header.style.transform = 'translateY(0)';
                     footer.style.transform = 'translateY(0)';
-                    iframe.style.transform = 'translateY(0)';
-                    //iframe.style.height = window.innerHeight + 'px';
+                    // DEV: Moving the iframe up by 1 pixel bizarrely solves the bug with the toolbar disappearing benath the iframe
+                    iframe.style.transform = 'translateY(-1px)';
+                    iframe.style.height = window.innerHeight + 'px';
                     //article.style.height = window.innerHeight + 'px';
                 }, 500);
             }
