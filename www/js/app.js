@@ -936,15 +936,17 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
 
         var iframe = document.getElementById('articleContent');
         var header = document.getElementById('top');
+        var footer = document.getElementById('footer');
+        var navbarDim;
         var oldScrollY;
         var newScrollY;
         var damper = 10;
+        //cookies.setItem('hideToolbar', false, Infinity);
         var helper = cookies.getItem('hideToolbar');
             
         var scrollFunction = function () {
             damper--;
             newScrollY = iframe.contentWindow.scrollY;
-            var navbarDim = document.getElementById('navbar').getBoundingClientRect();
             var prefix = document.getElementById('prefix');
             var footerDim = footer.getBoundingClientRect();
             var findInArticle = document.getElementById('findInArticle');
@@ -953,13 +955,13 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                 && document.activeElement !== findInArticle) {
                 if (damper > 0) return;
                 // If the header and/or footer have not already been hidden
-                if (/\(0p?x?\)/.test(header.style.transform)) {
+                if (/\(0p?x?\)/.test(header.style.transform) || /\(-1px\)/.test(iframe.style.transform)) {
                     setTimeout(function() {
                         damper = 10;
-                        if (newScrollY > 20) {
-                            header.style.transform = 'translateY(-' + navbarDim.height + 'px)';
+                        if (newScrollY > navbarDim.height) {
+                            header.style.transform = 'translateY(-' + (navbarDim.height - 2) + 'px)';
                             if (params.hideToolbars === true) // Only hide footer if requested
-                                footer.style.transform = 'translateY(' + footerDim.height + 'px)';
+                                footer.style.transform = 'translateY(' + (footerDim.height - 2) + 'px)';
                             if (helper) {
                                 uiUtil.systemAlert('New functionality!\n\nWhen you scroll down, toolbars are hidden\n' + 
                                 'Scroll slightly up to show them again\nTurn this behaviour off in Configuration');
@@ -967,9 +969,8 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                             }
                         }
                     }, 200);
-                    if (newScrollY > 20) {
-                        iframe.style.transform = 'translateY(-' + navbarDim.height + 'px)';
-                        // document.getElementById('search-article').style.overflowY = "hidden";
+                    if (newScrollY > 5) {
+                        // iframe.style.transform = 'translateY(-' + navbarDim.height + 'px)';
                         iframe.style.height = window.innerHeight + navbarDim +
                             (params.hideToolbars === true ? footerDim.height : 0) + 'px';
                     }
@@ -979,7 +980,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                 header.style.transform = 'translateY(0)';
                 footer.style.transform = 'translateY(0)';
                 if (newScrollY <= 20) {
-                    iframe.style.transform = 'translateY(-1px)';
+                    //iframe.style.transform = 'translateY(-1px)';
                     iframe.style.height = window.innerHeight + 'px';
                 }
             }
@@ -987,16 +988,18 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
         };
 
         function checkToolbar() {
-            var header = document.getElementById('top');
-            var footer = document.getElementById('footer');
             oldScrollY = iframe.contentWindow.scrollY;
+            navbarDim = document.getElementById('navbar').getBoundingClientRect();
             header.style.transition = "transform 500ms";
-            iframe.style.transition = "transform 600ms";
+            iframe.style.transition = "transform 500ms";
             footer.style.transition = "transform 500ms";
             iframe.style.zIndex = 0;
 
             iframe.contentDocument.removeEventListener('scroll', scrollFunction);
             if (params.hideToolbars) {
+                // Shift the iframe up and the document down
+                iframe.style.transform = 'translateY(-' + navbarDim.height + 'px)';
+                iframe.contentDocument.documentElement.style.transform = 'translateY(' + navbarDim.height + 'px)'; 
                 iframe.contentDocument.addEventListener('scroll', scrollFunction);
                 scrollFunction();
             } else {
