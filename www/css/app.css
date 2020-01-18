@@ -96,6 +96,7 @@ div:not(.panel-success, .alert-message) {
     padding-left: 12px;
     padding-right: 12px;
     background: lightblue;
+    z-index: 1;
 }
 
 #articleList a:hover, #articleList a.hover, .backgroundLightBlue {
