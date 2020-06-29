@@ -1,8 +1,8 @@
 {
   "name": "kiwix_js_windows",
-  "productName": "Kiwix JS Windows (NWJS",
+  "productName": "Kiwix JS Español (NWJS)",
   "version": "0.9.99N",
-  "description": "Kiwix JS Windows for NWJS",
+  "description": "Kiwix JS Español para NWJS",
   "main": "index.html",
   "domain": "kiwix.js.windows",
   "window": {

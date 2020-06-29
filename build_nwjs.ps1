@@ -1,6 +1,8 @@
 # $build = "win-x64"
 $build = "win-ia32"
-$target = "bld\nwjs\" + $build + "\kiwix_js_windows-0.9.99N"
+$targetDir = "kiwix_js_windows-0.9.99N"
+$baseTarget = "bld\nwjs\" + $build
+$target = $baseTarget + "\" + $targetDir
 $buildLocation = "node_modules\nwjs-builder-phoenix\caches\nwjs-v0.46.3-" + $build + ".zip-extracted\nwjs-v0.46.3-" + $build + "\"
 $fullTarget = $target + "-" + $build
 # $fullTarget
