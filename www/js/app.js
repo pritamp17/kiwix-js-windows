@@ -1920,13 +1920,15 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
 
         function pickFileNativeFS() {
             window.chooseFileSystemEntries().then(function(fileHandle) {
+                var handle = fileHandle;
                 fileHandle.getFile().then(function(file) {
+                    file.handle = handle;
                     params.pickedFile = file;
                     cookies.setItem('lastSelectedArchive', file.name, Infinity);
-                    params.storedFile = params.pickedFile.name;
+                    params.storedFile = file.name;
                     params.rescan = false;
                     document.getElementById('openLocalFiles').style.display = "none";
-                    setLocalArchiveFromFileList([params.pickedFile]);
+                    setLocalArchiveFromFileList([file]);
                     //populateDropDownListOfArchives([file.name]);
                 });
             });
