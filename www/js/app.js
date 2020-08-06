@@ -26,8 +26,8 @@
 // This uses require.js to structure javascript:
 // http://requirejs.org/docs/api.html#define
 
-define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cookies', 'q', 'transformStyles', 'kiwixServe'],
-    function ($, zimArchiveLoader, uiUtil, util, utf8, images, cookies, Q, transformStyles, kiwixServe) {
+define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cookies', 'q', 'transformStyles', 'kiwixServe'],
+    function ($, zimArchiveLoader, uiUtil, util, cache, images, cookies, Q, transformStyles, kiwixServe) {
 
         /**
          * The delay (in milliseconds) between two "keepalive" messages
@@ -818,6 +818,34 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
                 document.getElementById('instructions').style.display = "block";
                 document.getElementById('archiveFilesLegacy').style.display = "inline";
                 document.getElementById('archiveFilesLegacy').addEventListener('change', setLocalArchiveFromFileSelect);
+            }
+            // If user had previously picked a file using Native FS, offer to re-open
+            if (typeof window.chooseFileSystemEntries !== 'undefined' && !params.pickedFile) {
+                cache.idxDB('pickedFileHandle', function(val) {
+                    if (val) {
+                        var handle = val;
+                        // Check if we have persmission to open
+                        handle.requestPermission({mode: 'read'}).then(function(readPermission) {
+                            if (readPermission === 'granted') {
+                                processNativeFileHandle(handle);
+                            } else {
+                                  pickFileNativeFS();                              
+                            }
+                        }).catch(function(err) {
+                            console.error('Unable to load previously picked file', err);
+                            pickFileNativeFS();
+                        });
+                        // handle.queryPermission({mode: 'read'}).then(function(permission) {
+                        //     if (permission === 'granted') {
+                        //         processNativeFileHandle(handle);
+                        //     } else if (permission === 'prompt') {
+                        //         // Do nothing
+                        //     }
+                        // }).catch(function(err) {
+                        //     console.error('Unable to load previously picked file', err);
+                        // });
+                    }
+                });
             }
         });
         document.getElementById('btnAbout').addEventListener('click', function () {
@@ -1920,17 +1948,25 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'utf8', 'images', 'cooki
 
         function pickFileNativeFS() {
             window.chooseFileSystemEntries().then(function(fileHandle) {
-                var handle = fileHandle;
-                fileHandle.getFile().then(function(file) {
-                    file.handle = handle;
-                    params.pickedFile = file;
-                    cookies.setItem('lastSelectedArchive', file.name, Infinity);
-                    params.storedFile = file.name;
-                    params.rescan = false;
-                    document.getElementById('openLocalFiles').style.display = "none";
-                    setLocalArchiveFromFileList([file]);
-                    //populateDropDownListOfArchives([file.name]);
+                // Serialize fileHandle to indexedDB
+                cache.idxDB('pickedFileHandle', fileHandle, function(val) {
+                    console.log('IndexedDB responded with ' + val);
                 });
+                processNativeFileHandle(fileHandle);
+            });
+        }
+
+        function processNativeFileHandle(fileHandle) {
+            var handle = fileHandle;
+            fileHandle.getFile().then(function(file) {
+                file.handle = handle;
+                params.pickedFile = file;
+                cookies.setItem('lastSelectedArchive', file.name, Infinity);
+                params.storedFile = file.name;
+                params.rescan = false;
+                document.getElementById('openLocalFiles').style.display = "none";
+                setLocalArchiveFromFileList([file]);
+                //populateDropDownListOfArchives([file.name]);
             });
         }
 
