@@ -3662,6 +3662,13 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
             //var iframe = window.frames[0].frameElement;
             var iframe = document.getElementById('articleContent');
             var innerDoc = iframe.contentDocument;
+
+            // Insert kiwxAPI.js
+            var script = innerDoc.createElement('script');
+            script.type = 'text/javascript';
+            script.src = '../-/kiwixAPI.js';    
+            innerDoc.getElementsByTagName('head')[0].appendChild(script);
+
             var tableOfContents = new uiUtil.toc(innerDoc);
             var headings = tableOfContents.getHeadingObjects();
             document.getElementById('dropup').style.fontSize = ~~(params.relativeUIFontSize * 0.14) + "px";
