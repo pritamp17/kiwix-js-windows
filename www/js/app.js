@@ -3666,7 +3666,10 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
             // Insert kiwxAPI.js
             var script = innerDoc.createElement('script');
             script.type = 'text/javascript';
-            script.src = '../-/kiwixAPI.js';    
+            script.src = '../-/_api/toc.js';
+            script.addEventListener('load', function() {
+                console.log('ToC api available');
+            });
             innerDoc.getElementsByTagName('head')[0].appendChild(script);
 
             var tableOfContents = new uiUtil.toc(innerDoc);
