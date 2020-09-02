@@ -3668,7 +3668,10 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
             script.type = 'text/javascript';
             script.src = '../-/_api/toc.js';
             script.addEventListener('load', function() {
-                console.log('ToC api available');
+                console.log('Testing for presence of ToC API:');
+                console.log(zim);
+                console.log(zim.toc);
+                console.log(zim.toc.hasTableOfContents());
             });
             innerDoc.getElementsByTagName('head')[0].appendChild(script);
 
