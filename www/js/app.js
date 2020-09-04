@@ -3677,7 +3677,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
                     });
                 }
             }).catch(function (e) {
-                console.error("could not find DirEntry for javascript : " + title, e);
+                console.error("could not find DirEntry for javascript : " + apiToCFilename, e);
             });
         
             
