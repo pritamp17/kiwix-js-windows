@@ -3663,17 +3663,34 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
             var iframe = document.getElementById('articleContent');
             var innerDoc = iframe.contentDocument;
 
-            // Insert kiwxAPI.js
-            var script = innerDoc.createElement('script');
-            script.type = 'text/javascript';
-            script.src = '../-/_api/toc.js';
-            script.addEventListener('load', function() {
-                console.log('Testing for presence of ToC API:');
-                console.log(zim);
-                console.log(zim.toc);
-                console.log(zim.toc.hasTableOfContents());
+            // Insert Kiwix API
+            appstate.selectedArchive.getDirEntryByTitle('-/_api/toc.js').then(function (dirEntry) {
+                if (dirEntry === null) {
+                    console.log("Error: ToC API file not found: " + title);
+                } else {
+                    appstate.selectedArchive.readUtf8File(dirEntry, function (fileDirEntry, content) {
+                        var script = innerDoc.createElement('script');
+                        script.type = 'text/javascript';
+                        innerDoc.getElementsByTagName('head')[0].appendChild(script);
+                        uiUtil.feedNodeWithBlob(script, 'src', content, 'text/javascript', params.allowHTMLExtraction);
+                    });
+                }
+            }).catch(function (e) {
+                console.error("could not find DirEntry for javascript : " + title, e);
             });
-            innerDoc.getElementsByTagName('head')[0].appendChild(script);
+        
+            
+            
+            // var script = innerDoc.createElement('script');
+            // script.type = 'text/javascript';
+            // script.src = '../-/_api/toc.js';
+            // script.addEventListener('load', function() {
+            //     console.log('Testing for presence of ToC API:');
+            //     console.log(zim);
+            //     console.log(zim.toc);
+            //     console.log(zim.toc.hasTableOfContents());
+            // });
+            // innerDoc.getElementsByTagName('head')[0].appendChild(script);
 
             var tableOfContents = new uiUtil.toc(innerDoc);
             var headings = tableOfContents.getHeadingObjects();
