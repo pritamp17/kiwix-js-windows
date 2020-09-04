@@ -3664,9 +3664,10 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
             var innerDoc = iframe.contentDocument;
 
             // Insert Kiwix API
-            appstate.selectedArchive.getDirEntryByTitle('-/_api/toc.js').then(function (dirEntry) {
+            var apiToCFilename = '-/_api/toc.js';
+            appstate.selectedArchive.getDirEntryByTitle(apiToCFilename).then(function (dirEntry) {
                 if (dirEntry === null) {
-                    console.log("Error: ToC API file not found: " + title);
+                    console.log("Error: ToC API file not found: " + apiToCFilename);
                 } else {
                     appstate.selectedArchive.readUtf8File(dirEntry, function (fileDirEntry, content) {
                         var script = innerDoc.createElement('script');
