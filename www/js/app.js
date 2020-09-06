@@ -3674,11 +3674,11 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
                     console.log("Article has a table of contents");
                     var sections =_toc.getSections();
                     // Demonstrate a ToC 
-                    var secNum = 10;
+                    var secNum = 12;
                     var sectionEle = innerDoc.getElementById(sections[secNum].section_id);
                     // Open section parent
-                    var parentSection = sectionEle.closest('details');
-                    if (!parentSection.hasAttribute('open')) parentSection.toggleAttribute('open');
+                    var closedAncestor = sectionEle.closest('details:not([open])');
+                    if (closedAncestor) closedAncestor.setAttribute('open', '');
                     // Scroll to element
                     sectionEle.scrollIntoView();
                 } else {
@@ -3704,19 +3704,6 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
                 console.error("could not find DirEntry for javascript : " + apiToCFilename, e);
             });
         
-            
-            
-            // var script = innerDoc.createElement('script');
-            // script.type = 'text/javascript';
-            // script.src = '../-/_api/toc.js';
-            // script.addEventListener('load', function() {
-            //     console.log('Testing for presence of ToC API:');
-            //     console.log(zim);
-            //     console.log(zim.toc);
-            //     console.log(zim.toc.hasTableOfContents());
-            // });
-            // innerDoc.getElementsByTagName('head')[0].appendChild(script);
-
             var tableOfContents = new uiUtil.toc(innerDoc);
             var headings = tableOfContents.getHeadingObjects();
             document.getElementById('dropup').style.fontSize = ~~(params.relativeUIFontSize * 0.14) + "px";
