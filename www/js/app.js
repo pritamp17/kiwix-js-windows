@@ -3658,12 +3658,31 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
 
         } //End of displayArticleInForm()
 
+        
         function setupTableOfContents() {
             //var iframe = window.frames[0].frameElement;
             var iframe = document.getElementById('articleContent');
             var innerDoc = iframe.contentDocument;
 
-            // Insert Kiwix API
+            // Use Kiwix API
+            var useTocAPI = function() {
+                console.log("Kiwix API is available and attached");
+                // Demonstrate API usage
+                var _toc = window.frames[0].frameElement.contentWindow.zim.toc;
+                if (_toc) console.log("The toc API is available");
+                if (_toc && _toc.hasTableOfContent()) {
+                    console.log("Article has a table of contents");
+                    var sections =_toc.getSections();
+                    // Scroll to Section (change variable for testing)
+                    var secNum = 10;
+                    console.log("Scrolling to " + secNum);
+                    innerDoc.getElementById(sections[secNum].section_id).scrollIntoView();
+                } else {
+                    console.log("Article has not table of contents");
+                }
+            };
+    
+            // Attach Kiwix API to article DOM
             var apiToCFilename = '-/_api/toc.js';
             appstate.selectedArchive.getDirEntryByTitle(apiToCFilename).then(function (dirEntry) {
                 if (dirEntry === null) {
@@ -3672,6 +3691,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
                     appstate.selectedArchive.readUtf8File(dirEntry, function (fileDirEntry, content) {
                         var script = innerDoc.createElement('script');
                         script.type = 'text/javascript';
+                        script.addEventListener('load', useTocAPI);
                         innerDoc.getElementsByTagName('head')[0].appendChild(script);
                         uiUtil.feedNodeWithBlob(script, 'src', content, 'text/javascript', params.allowHTMLExtraction);
                     });
