@@ -3673,12 +3673,16 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
                 if (_toc && _toc.hasTableOfContent()) {
                     console.log("Article has a table of contents");
                     var sections =_toc.getSections();
-                    // Scroll to Section (change variable for testing)
+                    // Demonstrate a ToC 
                     var secNum = 10;
-                    console.log("Scrolling to " + secNum);
-                    innerDoc.getElementById(sections[secNum].section_id).scrollIntoView();
+                    var sectionEle = innerDoc.getElementById(sections[secNum].section_id);
+                    // Open section parent
+                    var parentSection = sectionEle.closest('details');
+                    if (!parentSection.hasAttribute('open')) parentSection.toggleAttribute('open');
+                    // Scroll to element
+                    sectionEle.scrollIntoView();
                 } else {
-                    console.log("Article has not table of contents");
+                    console.log("Article has no table of contents");
                 }
             };
     
