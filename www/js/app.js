@@ -3315,85 +3315,85 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
 
                     setupTableOfContents();
 
-                    // Attach listeners to headers to open-close following sections
-                    var eles = ["H2", "H3"];
-                    for (var i = 0; i < eles.length; i++) {
-                        // Process headers
-                        var collection = docBody.getElementsByTagName(eles[i]);
-                        for (var j = 0; j < collection.length; j++) {
-                            // Prevent heading from getting selected when clicking on it
-                            collection[j].style.userSelect = 'none';
-                            collection[j].style.msUserSelect = 'none';
-                            //collection[j].classList.add("open-block");
-                            collection[j].addEventListener("click", function (e) {
-                                var that = e.currentTarget;
-                                var topTag = that.tagName;
-                                that.classList.toggle("open-block");
-                                var nextElement = that.nextElementSibling;
-                                that = that.parentNode;
-                                if (!nextElement) nextElement = that.nextElementSibling;
-                                if (!nextElement) return;
-                                // Decide toggle direction based on first sibling element
-                                var toggleDirection = nextElement.classList.contains("collapsible-block") && !nextElement.classList.contains("open-block") || nextElement.style.display == "none" ? "block" : "none";
-                                //if (nextElement.style.display == "none") {
-                                //    this.innerHTML += "<br />";
-                                //} else {
-                                //    this.innerHTML = this.innerHTML.replace(/<br\s*\/?>$/i, "");
-                                //}
-                                while (nextElement && !~nextElement.tagName.indexOf(topTag) && !~nextElement.tagName.indexOf("H1")) {
-                                    if (nextElement.classList.contains("collapsible-block")) {
-                                        nextElement.classList.toggle("open-block");
-                                    } else if (that.classList.contains("collapsible-block")) {
-                                        // We're in a document that has been marked up, but we've encountered one that doesn't have markup, so stop
-                                        break;
-                                    } else {
-                                        nextElement.style.display = toggleDirection;
-                                    }
-                                    that = nextElement;
-                                    nextElement = that.nextElementSibling;
-                                }
-                            });
-                        }
-                    }
+                    // // Attach listeners to headers to open-close following sections
+                    // var eles = ["H2", "H3"];
+                    // for (var i = 0; i < eles.length; i++) {
+                    //     // Process headers
+                    //     var collection = docBody.getElementsByTagName(eles[i]);
+                    //     for (var j = 0; j < collection.length; j++) {
+                    //         // Prevent heading from getting selected when clicking on it
+                    //         collection[j].style.userSelect = 'none';
+                    //         collection[j].style.msUserSelect = 'none';
+                    //         //collection[j].classList.add("open-block");
+                    //         collection[j].addEventListener("click", function (e) {
+                    //             var that = e.currentTarget;
+                    //             var topTag = that.tagName;
+                    //             that.classList.toggle("open-block");
+                    //             var nextElement = that.nextElementSibling;
+                    //             that = that.parentNode;
+                    //             if (!nextElement) nextElement = that.nextElementSibling;
+                    //             if (!nextElement) return;
+                    //             // Decide toggle direction based on first sibling element
+                    //             var toggleDirection = nextElement.classList.contains("collapsible-block") && !nextElement.classList.contains("open-block") || nextElement.style.display == "none" ? "block" : "none";
+                    //             //if (nextElement.style.display == "none") {
+                    //             //    this.innerHTML += "<br />";
+                    //             //} else {
+                    //             //    this.innerHTML = this.innerHTML.replace(/<br\s*\/?>$/i, "");
+                    //             //}
+                    //             while (nextElement && !~nextElement.tagName.indexOf(topTag) && !~nextElement.tagName.indexOf("H1")) {
+                    //                 if (nextElement.classList.contains("collapsible-block")) {
+                    //                     nextElement.classList.toggle("open-block");
+                    //                 } else if (that.classList.contains("collapsible-block")) {
+                    //                     // We're in a document that has been marked up, but we've encountered one that doesn't have markup, so stop
+                    //                     break;
+                    //                 } else {
+                    //                     nextElement.style.display = toggleDirection;
+                    //                 }
+                    //                 that = nextElement;
+                    //                 nextElement = that.nextElementSibling;
+                    //             }
+                    //         });
+                    //     }
+                    // }
                     // Process endnote references (so they open the reference block if closed)
-                    var refs = docBody.getElementsByClassName("mw-reflink-text");
-                    if (refs) {
-                        for (var l = 0; l < refs.length; l++) {
-                            var reference = refs[l].parentElement;
-                            if (reference) {
-                                reference.addEventListener("click", function (obj) {
-                                    var refID = obj.target.hash || obj.target.parentNode.hash;
-                                    if (!refID) return;
-                                    refID = refID.replace(/#/, "");
-                                    var refLocation = iframeContentDocument.getElementById(refID);
-                                    // In some ZIMs the id is in the parent node or in the parent of the parent
-                                    var returnID = obj.target.id || obj.target.parentNode.id || obj.target.parentNode.parentNode.id;
-                                    // Add backlink to refLocation if missing
-                                    if (returnID && !~refLocation.innerHTML.indexOf('#' + returnID)) {
-                                        var returnLink = document.createElement('a');
-                                        returnLink.href = '#' + returnID;
-                                        returnLink.innerHTML = '↑';
-                                        refLocation.insertBefore(returnLink, refLocation.firstChild);
-                                    }
-                                    var refNext = util.getClosestBack(refLocation, function (el) {
-                                        return /^(H2|DETAILS)$/.test(el.tagName);
-                                    });
-                                    if (refNext) {
-                                        if (/DETAILS/.test(refNext.tagName)) {
-                                            refNext.open = true;
-                                            return;
-                                        }
-                                        refNext.classList.add("open-block");
-                                        //refNext.innerHTML = refNext.innerHTML.replace(/<br\s*\/?>$/i, "");
-                                        refNext = refNext.nextElementSibling;
-                                        while (refNext && refNext.classList.contains("collapsible-block")) {
-                                            refNext.classList.add("open-block");
-                                            refNext = refNext.nextElementSibling;
-                                        }
-                                    }
-                                });
-                            }
-                        }
+                    // var refs = docBody.getElementsByClassName("mw-reflink-text");
+                    // if (refs) {
+                    //     for (var l = 0; l < refs.length; l++) {
+                    //         var reference = refs[l].parentElement;
+                    //         if (reference) {
+                    //             reference.addEventListener("click", function (obj) {
+                    //                 var refID = obj.target.hash || obj.target.parentNode.hash;
+                    //                 if (!refID) return;
+                    //                 refID = refID.replace(/#/, "");
+                    //                 var refLocation = iframeContentDocument.getElementById(refID);
+                    //                 // In some ZIMs the id is in the parent node or in the parent of the parent
+                    //                 var returnID = obj.target.id || obj.target.parentNode.id || obj.target.parentNode.parentNode.id;
+                    //                 // Add backlink to refLocation if missing
+                    //                 if (returnID && !~refLocation.innerHTML.indexOf('#' + returnID)) {
+                    //                     var returnLink = document.createElement('a');
+                    //                     returnLink.href = '#' + returnID;
+                    //                     returnLink.innerHTML = '↑';
+                    //                     refLocation.insertBefore(returnLink, refLocation.firstChild);
+                    //                 }
+                    //                 var refNext = util.getClosestBack(refLocation, function (el) {
+                    //                     return /^(H2|DETAILS)$/.test(el.tagName);
+                    //                 });
+                    //                 if (refNext) {
+                    //                     if (/DETAILS/.test(refNext.tagName)) {
+                    //                         refNext.open = true;
+                    //                         return;
+                    //                     }
+                    //                     refNext.classList.add("open-block");
+                    //                     //refNext.innerHTML = refNext.innerHTML.replace(/<br\s*\/?>$/i, "");
+                    //                     refNext = refNext.nextElementSibling;
+                    //                     while (refNext && refNext.classList.contains("collapsible-block")) {
+                    //                         refNext.classList.add("open-block");
+                    //                         refNext = refNext.nextElementSibling;
+                    //                     }
+                    //                 }
+                    //             });
+                    //         }
+                    //     }
                     }
 
                     //Hide top-level scrolling -- gets rid of interfering useless scroll bar, but re-enable for Config and About pages
