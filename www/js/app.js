@@ -3666,23 +3666,28 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
 
             // Use Kiwix API
             var useTocAPI = function() {
+                var secNum = 12; // DEV change this number to query and scroll to different sections
                 console.log("Kiwix API is available and attached");
                 // Demonstrate API usage
                 var _toc = window.frames[0].frameElement.contentWindow.zim.toc;
                 if (_toc) console.log("The toc API is available");
+                // Demonstrate querying toc
+                console.log("Does article have a table of contents?" + _toc.hasTableOfContents());
                 if (_toc && _toc.hasTableOfContents()) {
-                    console.log("Article has a table of contents");
                     var sections =_toc.getSections();
-                    // Demonstrate a ToC 
-                    var secNum = 12;
-                    var sectionEle = innerDoc.getElementById(sections[secNum].section_id);
-                    // Open section parent
-                    var closedAncestor = sectionEle.closest('details:not([open])');
-                    if (closedAncestor) closedAncestor.setAttribute('open', '');
-                    // Scroll to element
-                    sectionEle.scrollIntoView();
-                } else {
-                    console.log("Article has no table of contents");
+                    // Demonstrate section usage
+                    console.log("Here are the sections in article:\n" + sections);
+                    // Find ID of Section secNum
+                    console.log("Here is section " + secNum + " ID:\n" + sections[secNum].section_id);
+                    // Demonstrate scroll to section (should include opening section above)
+                    console.log("Scrolling to section " + secNum + " and opening parent if necessary...");
+                    _toc.scrollToSection(secNum);
+                    // var sectionEle = innerDoc.getElementById(sections[secNum].section_id);
+                    // // Open section parent
+                    // var closedAncestor = sectionEle.closest('details:not([open])');
+                    // if (closedAncestor) closedAncestor.setAttribute('open', '');
+                    // // Scroll to element
+                    // sectionEle.scrollIntoView();
                 }
             };
     
