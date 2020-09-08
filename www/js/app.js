@@ -3315,7 +3315,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
 
                     setupTableOfContents();
 
-                    // // Attach listeners to headers to open-close following sections
+                    // Attach listeners to headers to open-close following sections
                     // var eles = ["H2", "H3"];
                     // for (var i = 0; i < eles.length; i++) {
                     //     // Process headers
@@ -3394,7 +3394,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
                     //             });
                     //         }
                     //     }
-                    }
+                    // }
 
                     //Hide top-level scrolling -- gets rid of interfering useless scroll bar, but re-enable for Config and About pages
                     // document.getElementById('search-article').scrollTop = 0;
