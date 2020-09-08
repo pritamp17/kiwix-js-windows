@@ -3670,7 +3670,7 @@ define(['jquery', 'zimArchiveLoader', 'uiUtil', 'util', 'cache', 'images', 'cook
                 // Demonstrate API usage
                 var _toc = window.frames[0].frameElement.contentWindow.zim.toc;
                 if (_toc) console.log("The toc API is available");
-                if (_toc && _toc.hasTableOfContent()) {
+                if (_toc && _toc.hasTableOfContents()) {
                     console.log("Article has a table of contents");
                     var sections =_toc.getSections();
                     // Demonstrate a ToC 
